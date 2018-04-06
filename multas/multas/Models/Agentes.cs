@@ -16,13 +16,19 @@ namespace multas.Models
 
 
         [Key]
-
         public int ID { get; set; } // chave primária
 
+        [Required(ErrorMessage ="O {0} é de preenchimento obrigatório!")] // o atributo nome é de preenchimento obrigatório
+        [RegularExpression("[A-Z][a-záéíóúäëïöüàèìòùâêîôûãõç]+(( | de | da | dos | d'|-| e )[A-Z][a-záéíóúäëïöüàèìòùâêîôûãõç]+){1,3}", 
+          ErrorMessage ="O nome apenas aceita letras. Cada nome começa por maiúscula")]
+        [StringLength(40)]
         public string Nome { get; set; }
 
+        [Required(ErrorMessage = "O {0} é de preenchimento obrigatório!")]
         public string Fotografia { get; set; }
 
+        [Required(ErrorMessage = "O {0} é de preenchimento obrigatório!")]
+        [RegularExpression("[A-Za-z 0-9]+",ErrorMessage ="Escreva um nome aceitável...")]
         public string Esquadra { get; set; }
 
         // complementar a informação sobre o relacionamento

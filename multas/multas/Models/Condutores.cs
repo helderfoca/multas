@@ -15,7 +15,6 @@ namespace multas.Models
         }
 
         [Key]
-
         public int ID { get; set; } // chave primária
 
         // dados próprios do condutor
