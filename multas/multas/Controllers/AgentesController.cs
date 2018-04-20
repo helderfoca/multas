@@ -66,23 +66,35 @@ namespace multas.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Nome,Esquadra")] Agentes agente, HttpPostedFileBase fileUploadFotografia)
         {
-
-            // determinar o ID do novo Agente
-            int novoID = db.Agentes.Max(a => a.ID) + 1;
-
+            int novoID = 0;
+            //***************************************
+            // proteger a geração de um novo ID
+            //***************************************
+            // determinar o numero de Agentes na tabela
+            if (db.Agentes.Count() == 0)
+            {
+                novoID = 1;
+            } else
+            {
+                novoID = db.Agentes.Max(a => a.ID) + 1;
+            }
             // atribuir o ID ao novo Agente
             agente.ID = novoID;
+            //******************************************
+            // outra hipótese possível seria utilizar o 
+            // try{ }
+            // catch (Exception) { }
+            //******************************************
 
             // var auxiliar
             string nomeFotografia = "Agente_" + novoID + ".jpg";
             string caminhoParaFotografia = Path.Combine(Server.MapPath("~/imagens/"),nomeFotografia); // incica onde a imagem vai ser guardada
-            // guardar o nome da imagem na base de dados
-            agente.Fotografia = nomeFotografia;
-
-
+           
             // verificar se chega efetivamente um ficheiro ao servidor
             if(fileUploadFotografia != null)
             {
+                // guardar o nome da imagem na base de dados
+                agente.Fotografia = nomeFotografia;
 
             } else
             {
@@ -90,28 +102,35 @@ namespace multas.Controllers
                 ModelState.AddModelError("", "Não foi fornecida uma imagem..."); // gera MSG de erro
                 return View(agente); // reenvia os dados do 'Agente' para a view
             }
+
+
             //  -verificar se o ficheiro é realmente uma imagem ---> casa
             //  -redimensionar a imagem ---> casa
-
-
+            
 
             // ModelState.IsValid --> confronta os dados fornecidos com o modelo
             // se não respeitar as regras do modelo, rejeita os dados
-            if (ModelState.IsValid)
-            {
-                // adiciona na estrutura de dados, na memória do servidor,
-                // o objeto Agentes
-                db.Agentes.Add(agente);
-                // faz 'commit' na BD
-                db.SaveChanges();
+            if (ModelState.IsValid) {
+                try {
+                    // adiciona na estrutura de dados, na memória do servidor,
+                    // o objeto Agentes
+                    db.Agentes.Add(agente);
+                    // faz 'commit' na BD
+                    db.SaveChanges();
 
-                // guardar a imagem no disco rígido
-                fileUploadFotografia.SaveAs(caminhoParaFotografia);
+                    // guardar a imagem no disco rígido
+                    fileUploadFotografia.SaveAs(caminhoParaFotografia);
 
-                // redireciona o utilizador para a página de ínicio
-                return RedirectToAction("Index");
+                    // redireciona o utilizador para a página de ínicio
+                    return RedirectToAction("Index");
+                }
+                catch (Exception) {
+                    // gerar uma mensagem de erro para o utilizador
+                    ModelState.AddModelError("", "Ocurreu um erro não determinado na criação do novo Agente...");
+                }
             }
 
+            // se se chegar aqui, é pq aconteceu algum problema
             // devolve os dados do agente à View
             return View(agente);
         }
