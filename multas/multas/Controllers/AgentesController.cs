@@ -17,12 +17,14 @@ namespace multas.Controllers
         private MultasDb db = new MultasDb();
 
         // GET: Agentes
-        public ActionResult Index()
-        {
-            // (LINQ)db.Agentes.ToList() --> em SQL: Select * from Agentes
+        public ActionResult Index() {
+            // (LINQ)db.Agentes.ToList() --> em SQL: Select * from Agentes Order by Nome
             // constroi uma lista com os dados de todos os Agentes
             // e envia-a para a View
-            return View(db.Agentes.ToList());
+
+            var listaAgentes = db.Agentes.ToList().OrderBy(a => a.Nome);
+
+            return View(listaAgentes);
         }
 
         // GET: Agentes/Details/5
