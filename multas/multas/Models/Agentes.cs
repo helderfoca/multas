@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -16,6 +17,7 @@ namespace multas.Models
 
 
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ID { get; set; } // chave primária
 
         [Required(ErrorMessage ="O {0} é de preenchimento obrigatório!")] // o atributo nome é de preenchimento obrigatório
@@ -28,7 +30,7 @@ namespace multas.Models
         public string Fotografia { get; set; }
 
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório!")]
-        [RegularExpression("[A-Za-z 0-9]+",ErrorMessage ="Escreva um nome aceitável...")]
+        [RegularExpression("[A-Za-záéíóúäëïöüàèìòùâêîôûãõç 0-9]+", ErrorMessage ="Escreva um nome aceitável...")]
         public string Esquadra { get; set; }
 
         // complementar a informação sobre o relacionamento
