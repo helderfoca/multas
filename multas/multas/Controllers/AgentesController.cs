@@ -14,7 +14,7 @@ namespace multas.Controllers
     public class AgentesController : Controller
     {
         //cria um objeto privado, que representa a base de dados
-        private MultasDb db = new MultasDb();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Agentes
         public ActionResult Index() {
@@ -96,7 +96,7 @@ namespace multas.Controllers
             string caminhoParaFotografia = Path.Combine(Server.MapPath("~/imagens/"),nomeFotografia); // incica onde a imagem vai ser guardada
            
             // verificar se chega efetivamente um ficheiro ao servidor
-            if(fileUploadFotografia != null)
+            if(fileUploadFotografia != null && fileUploadFotografia.ContentType.Equals("image/jpeg"))
             {
                 // guardar o nome da imagem na base de dados
                 agente.Fotografia = nomeFotografia;
@@ -162,16 +162,51 @@ namespace multas.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Nome,Fotografia,Esquadra")] Agentes agentes)
+        public ActionResult Edit([Bind(Include = "ID,Nome,Esquadra")] Agentes agente, HttpPostedFileBase editFotografia)
         {
+
+
+            // var auxiliar
+            string nomeFotografia = "Agente_" + agente.ID + ".jpg";
+            agente.Fotografia = nomeFotografia;
+            string caminhoParaFotografia = Path.Combine(Server.MapPath("~/imagens/"), nomeFotografia); // incica onde a imagem vai ser guardada
+
+            // verificar se chega efetivamente um ficheiro ao servidor
+            if (editFotografia == null)
+            {
+
+            }else if (editFotografia != null && editFotografia.ContentType.Equals("image/jpeg"))
+            {
+                 // guardar a imagem no disco rígido
+                    editFotografia.SaveAs(caminhoParaFotografia);
+            }
+            else
+            {
+                // não há imagem...
+                ModelState.AddModelError("", "Não foi fornecida uma imagem..."); // gera MSG de erro
+                return View(agente); // reenvia os dados do 'Agente' para a view
+            }
+
             if (ModelState.IsValid)
             {
-                // atualiza os dados do Agente, na estrutura de dados em memória
-                db.Entry(agentes).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                try
+                {
+                    db.Entry(agente).State = EntityState.Modified;
+
+                    // faz 'commit' na BD
+                    db.SaveChanges();
+
+                    // redireciona o utilizador para a página de ínicio
+                    return RedirectToAction("Index");
+                }
+                catch (Exception)
+                {
+                    // gerar uma mensagem de erro para o utilizador
+                    ModelState.AddModelError("", "Ocorreu um erro não determinado na criação do novo Agente...");
+                }
             }
-            return View(agentes);
+
+            return View(agente);
         }
 
         // GET: Agentes/Delete/5
