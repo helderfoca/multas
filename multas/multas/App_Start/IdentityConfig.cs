@@ -120,13 +120,15 @@ namespace multas.Models
 
             //Create Role Admin if it does not exist
             var role = roleManager.FindByName(roleName);
-            if (role == null) {
+            if (role == null)
+            {
                 role = new IdentityRole(roleName);
                 var roleresult = roleManager.Create(role);
             }
 
             var user = userManager.FindByName(name);
-            if (user == null) {
+            if (user == null)
+            {
                 user = new ApplicationUser { UserName = name, Email = name };
                 var result = userManager.Create(user, password);
                 result = userManager.SetLockoutEnabled(user.Id, false);
@@ -134,7 +136,8 @@ namespace multas.Models
 
             // Add user admin to Role Admin if not already added
             var rolesForUser = userManager.GetRoles(user.Id);
-            if (!rolesForUser.Contains(role.Name)) {
+            if (!rolesForUser.Contains(role.Name))
+            {
                 var result = userManager.AddToRole(user.Id, role.Name);
             }
         }

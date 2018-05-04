@@ -19,6 +19,7 @@ namespace multas.Models
 
         // dados próprios do condutor
 
+        [Display(Name = "Nome do Condutor")]
         public string Nome { get; set; }
 
         public string BI { get; set; }

@@ -24,6 +24,7 @@ namespace multas.Models
         [RegularExpression("[A-Z][a-záéíóúäëïöüàèìòùâêîôûãõç]+(( | de | da | dos | d'|-| e )[A-Z][a-záéíóúäëïöüàèìòùâêîôûãõç]+){1,3}", 
           ErrorMessage ="O nome apenas aceita letras. Cada nome começa por maiúscula")]
         [StringLength(40)]
+        [Display(Name = "Nome do Agente")]
         public string Nome { get; set; }
 
         // [Required(ErrorMessage = "O {0} é de preenchimento obrigatório!")]
@@ -37,5 +38,11 @@ namespace multas.Models
         // de um Agente com as Multas por ele 'passadas'
 
         public virtual ICollection<Multas> ListaDeMultas { get; set; }
+
+        //*********************************************************************************************************************************
+        // creiar uma FK para o utilizador autenticado
+        // [Required]
+        public string UserName { get; set; }
+
     }
 }
