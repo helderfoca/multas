@@ -14,16 +14,6 @@ namespace multas.Models
     /// </summary>
     public class ApplicationUser : IdentityUser
     {
-        // criar atributos que serão explicitos na minha aplicação
-        // eles vão ser criados na tabela AspNetUsers
-
-        public string NomeProprio { get; set; }
-
-        public string Apelido { get; set; }
-
-        public DateTime? DataNascimento { get; set; }
-
-
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -70,6 +60,9 @@ namespace multas.Models
         public virtual DbSet<Viaturas> Viaturas { get; set; }
 
         public virtual DbSet<Agentes> Agentes { get; set; }
+
+        // tabela para registar os dados dos utilizadores
+        public virtual DbSet<Utilizador> Utilizadores { get; set; }
 
         /// <summary>
         /// configura a forma como as tabelas são criadas
