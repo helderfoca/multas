@@ -17,13 +17,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", null, new { @class = "navbar-brand" })
+                @Html.ActionLink("Aplicação Multas", "Index", "Home", null, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Multas", "Index", "Multas")</li>
+                    <li>@Html.ActionLink("Agentes", "Index", "Agentes")</li>
+                    <li>@Html.ActionLink("Condutores", "Index", "Condutores")</li>
 
                     @if (Request.IsAuthenticated && User.IsInRole("Admin")) {
                         <li>@Html.ActionLink("RolesAdmin", "Index", "RolesAdmin")</li>
@@ -35,7 +35,13 @@
         </div>
     </div>
     <div class="container body-content">
+
+
+        @* é nesta zona que o conteúdodas nossas views vai ser inserido *@
         @RenderBody()
+        
+        
+        
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
