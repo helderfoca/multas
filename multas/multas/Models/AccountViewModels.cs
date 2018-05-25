@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace multas.Models
@@ -76,6 +77,17 @@ namespace multas.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        public string NomeProprio { get; set; }
+
+        [Required]
+        public string Apelido { get; set; }
+
+        [Required]
+        [Display(Name ="Data de Nascimento")]
+        public DateTime DataNascimento { get; set; }
+
     }
 
     public class ResetPasswordViewModel

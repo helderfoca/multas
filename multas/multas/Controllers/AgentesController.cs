@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using multas.Models;
 
 namespace multas.Controllers
@@ -18,6 +19,10 @@ namespace multas.Controllers
 
         // GET: Agentes
         public ActionResult Index() {
+
+            var nome = User.Identity.Name;
+            ApplicationUser utilizadorAutenticado = db.Users.Find(User.Identity.GetUserId());
+
             // (LINQ)db.Agentes.ToList() --> em SQL: Select * from Agentes Order by Nome
             // constroi uma lista com os dados de todos os Agentes
             // e envia-a para a View
