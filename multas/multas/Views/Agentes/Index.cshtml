@@ -6,10 +6,11 @@
 
 <h2>Lista de Agentes</h2>
 
+@if (User.IsInRole("Agentes")) {
 <p>
     @Html.ActionLink("Novo Agente", "Create")
 </p>
-
+}
 <table class="table">
     <tr>
         <th>
@@ -37,9 +38,13 @@
             <img src="~/imagens/@agentes.Fotografia" width="50" height="37" />
         </td>
         <td>
-            @Html.ActionLink("Editar", "Edit", new { id=agentes.ID }) |
-            @Html.ActionLink("Detalhes", "Details", new { id=agentes.ID }) |
-            @Html.ActionLink("Apagar", "Delete", new { id=agentes.ID })
+         @if (User.IsInRole("Agentes")) {
+            <div>
+                @Html.ActionLink("Editar", "Edit", new { id = agentes.ID }) |
+                @Html.ActionLink("Detalhes", "Details", new { id = agentes.ID }) |
+                @Html.ActionLink("Apagar", "Delete", new { id = agentes.ID })
+            </div>
+         }
         </td>
     </tr>
 }
